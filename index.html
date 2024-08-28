@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiscountDeals - Home</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Add Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .hero-section {
+            background-color: #f7f7f7;
+            padding: 50px 0;
+            text-align: center;
+        }
+        .hero-section h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .hero-section p {
+            font-size: 1.2em;
+            color: #666;
+        }
+        .hero-section button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2em;
+            margin: 40px 0 20px;
+            color: #333;
+        }
+        .about-section, .services-section, .testimonials-section {
+            padding: 40px 20px;
+            background-color: #f7f7f7;
+            text-align: center;
+        }
+        .about-section p, .services-section p, .testimonials-section p {
+            max-width: 800px;
+            margin: auto;
+            font-size: 1em;
+            color: #666;
+        }
+        .service-item, .testimonial-item {
+            margin: 20px 0;
+        }
+        .product-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .product-item {
+            width: 30%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+        .product-item img {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        .product-item h3 {
+            font-size: 1.2em;
+            color: #333;
+        }
+        .product-item p {
+            font-size: 1em;
+            color: #666;
+        }
+        .product-item button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .main-footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+        }
+        .main-footer .container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <h1>DiscountDeals</h1>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1>Welcome to DiscountDeals</h1>
+            <p>Your one-stop shop for amazing discounts on the products you love!</p>
+            <button onclick="window.location.href='shop.html'">Shop Now</button>
+        </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section class="home-section">
+        <div class="container">
+            <h2 class="section-title">Featured Products</h2>
+            <div class="product-grid" id="homeProductGrid">
+                <!-- Products will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section class="about-section">
+        <div class="container">
+            <h2 class="section-title">About Us</h2>
+            <p>DiscountDeals is committed to bringing you the best deals on a wide variety of products. We believe that quality doesn't have to be expensive, and our mission is to prove that every day.</p>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <div class="service-item">
+                <h3>Top Quality Products</h3>
+                <p>We offer a carefully curated selection of high-quality products at unbeatable prices.</p>
+            </div>
+            <div class="service-item">
+                <h3>Fast and Free Shipping</h3>
+                <p>Enjoy fast, free shipping on all orders over $50. We deliver straight to your door with no hassle.</p>
+            </div>
+            <div class="service-item">
+                <h3>Excellent Customer Support</h3>
+                <p>Our dedicated customer support team is here to help you with any questions or concerns.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title">What Our Customers Say</h2>
+            <div class="testimonial-item">
+                <p>"I found exactly what I was looking for at a great price. The checkout process was simple, and my order arrived quickly!" - Jane Doe</p>
+            </div>
+            <div class="testimonial-item">
+                <p>"DiscountDeals is my go-to for all my shopping needs. They always have fantastic deals on quality products." - John Smith</p>
+            </div>
+            <div class="testimonial-item">
+                <p>"I've saved so much money shopping here! The customer service is top-notch, and I love the free shipping." - Sarah Johnson</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div>
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Follow Us</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for dynamically loading products -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to dynamically load products for the homepage
+            function loadProductsForHome() {
+                fetch('/products')
+                    .then(response => response.json())
+                    .then(products => {
+                        const productGrid = document.getElementById('homeProductGrid');
+                        products.slice(0, 3).forEach(product => {  // Display only first 3 products on homepage
+                            const productItem = document.createElement('div');
+                            productItem.className = 'product-item';
+                            productItem.innerHTML = `
+                                <div class="product-image">
+                                    <img src="${product.image}" alt="${product.title}">
+                                </div>
+                                <h3>${product.title}</h3>
+                                <p>${product.description}</p>
+                                <button class="button add-to-cart">Add to Cart</button>
+                            `;
+                            productGrid.appendChild(productItem);
+                        });
+
+                        // Attach event listeners to the newly added buttons
+                        document.querySelectorAll('.add-to-cart').forEach(button => {
+                            button.addEventListener('click', function() {
+                                const product = this.parentElement.querySelector('h3').textContent;
+                                addToCart(product);
+                            });
+                        });
+                    })
+                    .catch(error => console.error('Error loading products:', error));
+            }
+
+            // Function to add product to cart
+            function addToCart(product) {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cart.push(product);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                alert(product + ' has been added to your cart. Go to the cart for checkout.');
+            }
+
+            // Load products when the page loads
+            loadProductsForHome();
+        });
+    </script>
+</body>
+</html>

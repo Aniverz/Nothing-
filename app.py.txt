@@ -1,0 +1,67 @@
+from flask import Flask, request, jsonify, render_template
+import os
+import json
+
+app = Flask(__name__)
+PRODUCTS_DIR = 'products'
+
+# Ensure products directory exists
+if not os.path.exists(PRODUCTS_DIR):
+    os.makedirs(PRODUCTS_DIR)
+
+# Load products from JSON file
+def load_products():
+    if os.path.exists('products.json'):
+        with open('products.json', 'r') as file:
+            return json.load(file)
+    return []
+
+# Save products to JSON file
+def save_products(products):
+    with open('products.json', 'w') as file:
+        json.dump(products, file)
+
+# Route for admin page
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
+
+# Route to add a new product
+@app.route('/add_product', methods=['POST'])
+def add_product():
+    try:
+        # Get product details
+        product_name = request.form['productName']
+        product_description = request.form['productDescription']
+        product_image = request.files['productImage']
+
+        # Save image
+        image_path = os.path.join(PRODUCTS_DIR, product_image.filename)
+        product_image.save(image_path)
+
+        # Load existing products
+        products = load_products()
+
+        # Add new product
+        new_product = {
+            'title': product_name,
+            'description': product_description,
+            'image': image_path
+        }
+        products.append(new_product)
+
+        # Save products
+        save_products(products)
+
+        return jsonify({'success': True})
+    except Exception as e:
+        print(e)
+        return jsonify({'success': False})
+
+# Route to get all products for the shop page
+@app.route('/products')
+def get_products():
+    return jsonify(load_products())
+
+if __name__ == '__main__':
+    app.run(debug=True)

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiscountDeals - Shop</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <h1>DiscountDeals</h1>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Shop Section -->
+    <section class="shop-section">
+        <div class="container">
+            <h2>Shop All Products</h2>
+            <div class="product-grid" id="productGrid">
+                <!-- Products will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2024 DiscountDeals. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for dynamically loading products -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to dynamically load products from the server
+            function loadProducts() {
+                fetch('/products')
+                    .then(response => response.json())
+                    .then(products => {
+                        const productGrid = document.getElementById('productGrid');
+                        products.forEach(product => {
+                            const productItem = document.createElement('div');
+                            productItem.className = 'product-item';
+                            productItem.innerHTML = `
+                                <div class="product-image">
+                                    <img src="${product.image}" alt="${product.title}">
+                                </div>
+                                <h3>${product.title}</h3>
+                                <p>${product.description}</p>
+                                <button class="button add-to-cart">Add to Cart</button>
+                            `;
+                            productGrid.appendChild(productItem);
+                        });
+
+                        // Attach event listeners to the newly added buttons
+                        document.querySelectorAll('.add-to-cart').forEach(button => {
+                            button.addEventListener('click', function() {
+                                const product = this.parentElement.querySelector('h3').textContent;
+                                addToCart(product);
+                            });
+                        });
+                    })
+                    .catch(error => console.error('Error loading products:', error));
+            }
+
+            // Function to add product to cart
+            function addToCart(product) {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cart.push(product);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                alert(product + ' has been added to your cart. Go to the cart for checkout.');
+            }
+
+            // Load products when the page loads
+            loadProducts();
+        });
+    </script>
+</body>
+</html>

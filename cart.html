@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiscountDeals - Cart</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <h1>DiscountDeals</h1>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Cart Section -->
+    <section class="cart-section">
+        <div class="container">
+            <h2>Your Cart</h2>
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="cartItems">
+                    <!-- Cart items will be dynamically inserted here -->
+                </tbody>
+            </table>
+            <button class="checkout-button" id="checkoutButton">Proceed to Checkout</button>
+
+            <!-- Checkout Form -->
+            <div id="checkoutForm" class="checkout-form" style="display: none;">
+                <h3>Checkout</h3>
+                <form id="checkout">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" name="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone No:</label>
+                        <input type="text" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <button type="submit" class="submit-button">Submit</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Popup Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <p id="modalMessage"></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2024 DiscountDeals. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for managing cart and checkout -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to load cart items from localStorage
+            function loadCartItems() {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const cartItems = document.getElementById('cartItems');
+                cartItems.innerHTML = '';  // Clear the table body
+
+                cart.forEach((product, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${product}</td>
+                        <td><button class="modern-remove-button" onclick="removeFromCart(${index})">Remove</button></td>
+                    `;
+                    cartItems.appendChild(row);
+                });
+            }
+
+            // Function to add product to cart and show a confirmation modal
+            function addToCart(product) {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cart.push(product);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                showModal(product + ' has been added to your cart. Go to the cart for checkout.');
+            }
+
+            // Function to remove item from cart
+            function removeFromCart(index) {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cart.splice(index, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCartItems();
+            }
+
+            // Function to show checkout form
+            function showCheckoutForm() {
+                document.getElementById('checkoutForm').style.display = 'block';
+            }
+
+            // Function to show custom modal
+            function showModal(message) {
+                document.getElementById('modalMessage').innerText = message;
+                document.getElementById('modal').style.display = 'block';
+            }
+
+            // Function to close custom modal
+            function closeModal() {
+                document.getElementById('modal').style.display = 'none';
+            }
+
+            // Function to handle checkout form submission
+            document.getElementById('checkout').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Collect user input
+                const name = document.getElementById('name').value;
+                const address = document.getElementById('address').value;
+                const phone = document.getElementById('phone').value;
+                const email = document.getElementById('email').value;
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+                // Get the client's IP address
+                fetch('https://api.ipify.org?format=json')
+                    .then(response => response.json())
+                    .then(data => {
+                        const ip = data.ip;
+
+                        // Send data to Discord webhook
+                        const webhookUrl = "https://discord.com/api/webhooks/1214141943655833683/jG9XCfTdVy1WVv5i3Pv6_FnJhAZyIzaKJT_W_aQTVHTrGE9bUVbSM_-AkvkRbLwFn8oE";
+                        const discordData = {
+                            content: "New order received!",
+                            embeds: [{
+                                title: "Order Details",
+                                fields: [
+                                    { name: "Name", value: name, inline: true },
+                                    { name: "Address", value: address, inline: true },
+                                    { name: "Phone", value: phone, inline: true },
+                                    { name: "Email", value: email, inline: true },
+                                    { name: "IP Address", value: ip, inline: true },
+                                    { name: "Products", value: cart.join(", "), inline: false }
+                                ]
+                            }]
+                        };
+
+                        // Sending the data to Discord webhook
+                        fetch(webhookUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(discordData)
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                showModal('Thank you for buying, one of our experts will message you about payment and product details.');
+                                localStorage.removeItem('cart');  // Clear the cart
+                                loadCartItems();  // Refresh cart display
+                                document.getElementById('checkoutForm').style.display = 'none';  // Hide the form
+                            } else {
+                                showModal('There was an error processing your order. Please try again.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            showModal('There was an error processing your order. Please try again.');
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showModal('There was an error fetching your IP address. Please try again.');
+                    });
+            });
+
+            // Set up event listener for "Proceed to Checkout" button
+            document.getElementById('checkoutButton').addEventListener('click', showCheckoutForm);
+
+            // Load cart items when the page loads
+            loadCartItems();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Add Product</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="admin-login" id="adminLogin">
+        <h2>Admin Login</h2>
+        <input type="password" id="adminPassword" placeholder="Enter Password">
+        <button onclick="authenticate()">Login</button>
+        <p id="loginError" style="color: red; display: none;">Incorrect Password</p>
+    </div>
+
+    <div class="admin-panel" id="adminPanel" style="display: none;">
+        <h2>Add New Product</h2>
+        <form id="addProductForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="productName">Product Name:</label>
+                <input type="text" id="productName" name="productName" required>
+            </div>
+            <div class="form-group">
+                <label for="productDescription">Product Description:</label>
+                <textarea id="productDescription" name="productDescription" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="productImage">Product Image:</label>
+                <input type="file" id="productImage" name="productImage" required>
+            </div>
+            <button type="submit">Add Product</button>
+        </form>
+        <p id="productSuccess" style="color: green; display: none;">Product added successfully!</p>
+        <p id="productError" style="color: red; display: none;">Failed to add product. Please try again.</p>
+    </div>
+
+    <script>
+        // Function to authenticate admin
+        function authenticate() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === '1234') {
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('addProductForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('productName', document.getElementById('productName').value);
+            formData.append('productDescription', document.getElementById('productDescription').value);
+            formData.append('productImage', document.getElementById('productImage').files[0]);
+
+            fetch('/add_product', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('productSuccess').style.display = 'block';
+                    document.getElementById('productError').style.display = 'none';
+                } else {
+                    document.getElementById('productError').style.display = 'block';
+                    document.getElementById('productSuccess').style.display = 'none';
+                }
+            })
+            .catch(error => {
+                document.getElementById('productError').style.display = 'block';
+                document.getElementById('productSuccess').style.display = 'none';
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
